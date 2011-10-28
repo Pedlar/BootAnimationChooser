@@ -1,14 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Bootanimation Chooser</string>
-    <string name="main_head">Bootanimation Chooser</string>
+    <string name="app_name">Boot animation Chooser</string>
+    <string name="main_head">Boot animation Chooser</string>
     <string name="bootanimation_reset_title">Reset</string>
-    <string name="bootanimation_reset_summary">Reset a Bootanimation</string>
+    <string name="bootanimation_reset_summary">Reset a Boota nimation</string>
     <string name="bootanimation_preview_title">Preview</string>
-    <string name="bootanimation_preview_summary">Preview A Bootanimation</string>
+    <string name="bootanimation_preview_summary">Preview A Boot animation</string>
     <string name="bootanimation_title">Choose</string>
-    <string name="bootanimation_summary">Choose a Bootanimation</string>
+    <string name="bootanimation_summary">Choose a Boot animation</string>
     <string name="remove_ui">Reset to default.</string>
-    <string name="move_ui">Successfully set Bootanimation</string>
+    <string name="move_ui">Successfully set Boot animation</string>
     <string name="install_bootnim_title">Install</string>
+    
+    <string name="start_message">
+    Thank you for choosing Boot Animation Chooser. There is some required information on how to setup 
+    and run this application properly found below
+    \n\n
+    In order to set your Boot Animation you will want to slide your finger to the left, accessing the
+    File Chooser on the right hand side. You will want to choose the boot animation zip file that
+    is located on your SD card. If you do not have one yet, you can download a boot animation from the
+    internet and then connect your device to your computer and move the boot animation file over to your
+    SD card.
+    \n\n
+    Once you have chosen a boot animation you can slide back to the Main view where you can \"Preview\"
+    the chosen or current animation. Once you\'re pleased with your choice you can choose \"Set Chosen File\".
+    This will set the boot animation for you.
+    </string>
+    <!-- 
+    Thank you for choosing Boot Animation Chooser. There is some required information on how to setup 
+    and run this application properly found below
+    \n\n
+    Below you will notice two installation methods. The recommended option being the binary installer, 
+    however this unfortunately does not work on every device. If you know for sure this method does 
+    not work on your device please choose the alternate installation method, this will work on all 
+    devices. Don\'t worry if you\'re unsure, this is changeable in the preferences menu later.
+    \n\n
+    If you chose the binary installation method and it did not work for you, you can click \"Uninstall\" 
+    and this will remove the binary and then you can go into the preferences and choose the alternate 
+    method for installing Boot animations.
+    \n\n
+    In order to set your Boot Animation you will want to slide your finger to the left, accessing the
+    File Chooser on the right hand side. You will want to choose the boot animation zip file that
+    is located on your SD card. If you do not have one yet, you can download a boot animation from the
+    internet and then connect your device to your computer and move the boot animation file over to your
+    SD card.
+    \n\n
+    Once you have chosen a boot animation you can slide back to the Main view where you can \"Preview\"
+    the chosen or current animation. Once you\'re pleased with your choice you can choose \"Set Chosen File\".
+    This will set the boot animation for you.
+     -->
 </resources>

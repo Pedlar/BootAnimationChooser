@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:weightSum="1" android:id="@+id/linearLayout1"
+	android:layout_height="wrap_content" 
+	android:layout_width="275dp"
+	android:orientation="vertical">
+	<View 
+			android:id="@+id/separator" 
+			android:background="#ffffff" 
+			android:layout_width = "fill_parent"
+			android:layout_height="3dip"
+			android:layout_centerVertical ="true"
+			android:layout_alignParentTop="true"/>
+	<TextView 
+			android:text="Please read the below content" 
+			android:id="@+id/welcome_text" 
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:layout_gravity="center"
+			android:textStyle="bold"
+			android:textColor="#ffffff"
+			android:textSize="18dp" >.
+		</TextView>
+	<View 
+			android:id="@+id/separator" 
+ 			android:background="#ffffff" 
+ 			android:layout_width = "fill_parent"
+ 			android:layout_height="3dip"
+ 			android:layout_marginTop="10dip"
+ 			android:layout_marginBottom="10dip"
+ 			android:layout_centerVertical ="true"
+ 			android:layout_alignParentTop="true"/>
+	<ScrollView
+    	android:layout_width="fill_parent"
+    	android:layout_height="270dp">
+		<FrameLayout 
+			android:layout_height="270dp" 
+			android:layout_width="fill_parent" 
+			android:id="@+id/frameLayout1"
+			android:scrollbars="vertical"
+			android:scrollbarStyle="insideInset">
+			<TextView 
+				android:text="" 
+				android:id="@+id/start_text" 
+				android:layout_height="fill_parent"
+				android:layout_width="fill_parent">.
+			</TextView>
+		</FrameLayout>
+	</ScrollView>
+
+	<View
+	    android:id="@+id/separator"
+	    android:layout_width="306dp"
+	    android:layout_height="3dip"
+	    android:layout_alignParentTop="true"
+	    android:layout_centerVertical="true"
+	    android:layout_marginBottom="10dip"
+	    android:layout_marginTop="10dip"
+	    android:layout_weight="0.06"
+	    android:background="#ffffff" />
+
+	 <LinearLayout
+		android:id="@+id/linearLayout2"
+		android:layout_height="wrap_content" 
+		android:layout_width="wrap_content"
+		android:orientation="horizontal"
+		android:layout_gravity="center">
+		<!-- 
+		<Button 
+			android:text="Binary Installer" 
+			android:id="@+id/binary_button"
+			android:layout_height="wrap_content" 
+			android:layout_width="wrap_content">
+		</Button>
+		-->
+
+		<Button
+		    android:id="@+id/alternate_button"
+		    android:layout_width="219dp"
+		    android:layout_height="wrap_content"
+		    android:text="Ok!" >
+
+		</Button>
+	</LinearLayout>
+</LinearLayout>

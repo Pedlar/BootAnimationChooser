@@ -13,9 +13,11 @@ public class ViewAdapter extends BaseAdapter implements TitleProvider {
 
     private static final int VIEW1 = 0;
     private static final int VIEW2 = 1;
-    private static final int VIEW_MAX_COUNT = VIEW2 + 1;
+    private static final int VIEW3 = 2;
+    private static final int VIEW_MAX_COUNT = VIEW3 + 1;
+
     private final String[] names = {
-            "Main", "File Chooser"
+            "Preferences", "Main", "File Chooser"
     };
 
     private LayoutInflater mInflater;
@@ -36,7 +38,7 @@ public class ViewAdapter extends BaseAdapter implements TitleProvider {
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 
     @Override
@@ -58,6 +60,9 @@ public class ViewAdapter extends BaseAdapter implements TitleProvider {
                     convertView = mInflater.inflate(R.layout.main_view, null);
                     break;
                 case VIEW2:
+                    convertView = mInflater.inflate(R.layout.prefs_view, null);
+                    break;
+                case VIEW3:
                     convertView = mInflater.inflate(R.layout.file_view, null);
                     break;
             }
