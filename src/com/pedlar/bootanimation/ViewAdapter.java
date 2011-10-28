@@ -1,3 +1,4 @@
+
 package com.pedlar.bootanimation;
 
 import org.taptwo.android.widget.TitleProvider;
@@ -10,10 +11,12 @@ import android.widget.BaseAdapter;
 
 public class ViewAdapter extends BaseAdapter implements TitleProvider {
 
-        private static final int VIEW1 = 0;
-        private static final int VIEW2 = 1;
-        private static final int VIEW_MAX_COUNT = VIEW2 + 1;
-    	private final String[] names = {"Main","File Chooser"};
+    private static final int VIEW1 = 0;
+    private static final int VIEW2 = 1;
+    private static final int VIEW_MAX_COUNT = VIEW2 + 1;
+    private final String[] names = {
+            "Main", "File Chooser"
+    };
 
     private LayoutInflater mInflater;
 
@@ -62,13 +65,12 @@ public class ViewAdapter extends BaseAdapter implements TitleProvider {
         return convertView;
     }
 
-
-
-    /* (non-Javadoc)
-	 * @see org.taptwo.android.widget.TitleProvider#getTitle(int)
-	 */
-	public String getTitle(int position) {
-		return names[position];
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.taptwo.android.widget.TitleProvider#getTitle(int)
+     */
+    public String getTitle(int position) {
+        return names[position];
+    }
 
 }

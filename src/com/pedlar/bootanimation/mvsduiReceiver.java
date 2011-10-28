@@ -3,11 +3,12 @@ package com.pedlar.bootanimation;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import android.util.Log;
 
 public class mvsduiReceiver extends BroadcastReceiver {
 

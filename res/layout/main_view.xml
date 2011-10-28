@@ -1,63 +1,206 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:background="@drawable/background"
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:id="@+id/main_layout"
-  android:layout_height="fill_parent" android:orientation="vertical" android:layout_width="fill_parent" android:weightSum="1">
-    <LinearLayout android:gravity="center" android:layout_width="fill_parent" android:layout_height="69dp">
-       		<TextView android:textColor="@android:color/black" android:id="@+id/chose_file" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-    </LinearLayout>
-    
-    <!-- Install -->
-    <LinearLayout android:id="@+id/installayout_main" android:gravity="center"  android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical">
-    	<LinearLayout android:gravity="center" android:layout_height="fill_parent" android:layout_width="wrap_content" android:weightSum="1" android:orientation="vertical">
-       		<TextView android:textColor="@android:color/black" android:text="In order to setup the Boot Animation Chooser you must click install below whenever this message and icon are displayed." android:id="@+id/install_summary" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-    	</LinearLayout>
-    	<LinearLayout android:gravity="center" android:layout_height="fill_parent" android:id="@+id/installayout" android:layout_width="165dp" android:weightSum="1" android:orientation="vertical">
-       		<ImageView android:id="@+id/install" android:src="@drawable/install" android:layout_width="wrap_content" android:layout_height="wrap_content"></ImageView>
-       		<TextView android:textColor="@android:color/black" android:text="Install" android:id="@+id/install_text" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-    	</LinearLayout>
-    </LinearLayout>
-    
-    <!-- Choose & Preview Choice -->
-    <LinearLayout android:gravity="center" android:layout_height="69dp" android:id="@+id/linearLayout2" android:layout_width="fill_parent" android:weightSum="1" android:orientation="horizontal">
-    	<LinearLayout android:gravity="center" android:layout_height="fill_parent" android:id="@+id/chooselayout" android:layout_width="165dp" android:weightSum="1" android:orientation="vertical">
-       		<ImageView android:id="@+id/imageView1" android:src="@drawable/choose" android:layout_width="wrap_content" android:layout_height="wrap_content"></ImageView>
-       		<TextView android:textColor="@android:color/black" android:text="Set Chosen File" android:id="@+id/choose_text" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-    	</LinearLayout>
-    	<LinearLayout android:gravity="center" android:layout_height="fill_parent" android:id="@+id/previewlayout" android:layout_width="165dp" android:weightSum="1" android:orientation="vertical">
-       		<ImageView android:id="@+id/imageView3" android:src="@drawable/preview" android:layout_width="wrap_content" android:layout_height="wrap_content"></ImageView>
-       		<TextView android:textColor="@android:color/black" android:text="Preview Chosen File" android:id="@+id/preview_text" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-    	</LinearLayout>
-    </LinearLayout>
-    
-    <!-- Spacer -->
-    <LinearLayout android:gravity="center" android:layout_width="fill_parent" android:layout_height="35dp">
-    </LinearLayout>
-    
-    <!-- Reset & Preview Current -->
-    <LinearLayout android:gravity="center" android:layout_height="69dp" android:id="@+id/linearLayout2" android:layout_width="fill_parent" android:weightSum="1" android:orientation="horizontal">
-    	<LinearLayout android:gravity="center" android:layout_height="fill_parent" android:id="@+id/resetlayout" android:layout_width="165dp" android:weightSum="1" android:orientation="vertical">
-       		<ImageView android:id="@+id/imageView2" android:src="@drawable/reset" android:layout_width="wrap_content" android:layout_height="wrap_content"></ImageView>
-       		<TextView android:textColor="@android:color/black" android:text="Reset" android:id="@+id/reset_text" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-    	</LinearLayout>
-    	<LinearLayout android:gravity="center" android:layout_height="fill_parent" android:id="@+id/previewlayout_current" android:layout_width="165dp" android:weightSum="1" android:orientation="vertical">
-       		<ImageView android:id="@+id/imageView3" android:src="@drawable/preview" android:layout_width="wrap_content" android:layout_height="wrap_content"></ImageView>
-       		<TextView android:textColor="@android:color/black" android:text="Preview Current File" android:id="@+id/preview_text" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-    	</LinearLayout>
-    </LinearLayout>
-    
-    <!-- Spacer -->
-    <LinearLayout android:gravity="center" android:layout_width="fill_parent" android:layout_height="58dp">
-    </LinearLayout>
-    
-    <!-- Install -->
-    <LinearLayout android:id="@+id/uninstallayout_main" android:gravity="center"  android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical">
-    	<LinearLayout android:gravity="center" android:layout_height="fill_parent" android:layout_width="wrap_content" android:weightSum="1" android:orientation="vertical">
-       		<TextView android:textColor="@android:color/black" android:text="Uninstall Boot Animation Chooser Binary:" android:id="@+id/uninstall_summary" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-    	</LinearLayout>
-    	<LinearLayout android:gravity="center" android:layout_height="fill_parent" android:id="@+id/uninstallayout" android:layout_width="165dp" android:weightSum="1" android:orientation="vertical">
-       		<ImageView android:id="@+id/uninstall" android:src="@drawable/uninstall" android:layout_width="wrap_content" android:layout_height="wrap_content"></ImageView>
-       		<TextView android:textColor="@android:color/black" android:text="Uninstall" android:id="@+id/uninstall_text" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-    	</LinearLayout>
-    </LinearLayout>
+<LinearLayout
+	android:background="@drawable/background"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/main_layout"
+	android:layout_height="fill_parent"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:weightSum="1">
+	<LinearLayout
+		android:gravity="center"
+		android:layout_width="fill_parent"
+		android:layout_height="69dp">
+		<TextView
+			android:textColor="@android:color/black"
+			android:id="@+id/chose_file"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"></TextView>
+	</LinearLayout>
+	<!-- Install -->
+	<LinearLayout
+		android:id="@+id/installayout_main"
+		android:gravity="center"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical">
+		<LinearLayout
+			android:gravity="center"
+			android:layout_height="fill_parent"
+			android:layout_width="wrap_content"
+			android:weightSum="1"
+			android:orientation="vertical">
+			<TextView
+				android:textColor="@android:color/black"
+				android:text="In order to setup the Boot Animation Chooser you must click install below whenever this message and icon are displayed."
+				android:id="@+id/install_summary"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"></TextView>
+		</LinearLayout>
+		<LinearLayout
+			android:gravity="center"
+			android:layout_height="fill_parent"
+			android:id="@+id/installayout"
+			android:layout_width="165dp"
+			android:weightSum="1"
+			android:orientation="vertical">
+			<ImageView
+				android:id="@+id/install"
+				android:src="@drawable/install"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"></ImageView>
+			<TextView
+				android:textColor="@android:color/black"
+				android:text="Install"
+				android:id="@+id/install_text"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"></TextView>
+		</LinearLayout>
+	</LinearLayout>
+	<!-- Choose & Preview Choice -->
+	<LinearLayout
+		android:gravity="center"
+		android:layout_height="69dp"
+		android:id="@+id/linearLayout2"
+		android:layout_width="fill_parent"
+		android:weightSum="1"
+		android:orientation="horizontal">
+		<LinearLayout
+			android:gravity="center"
+			android:layout_height="fill_parent"
+			android:id="@+id/chooselayout"
+			android:layout_width="165dp"
+			android:weightSum="1"
+			android:orientation="vertical">
+			<ImageView
+				android:id="@+id/imageView1"
+				android:src="@drawable/choose"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"></ImageView>
+			<TextView
+				android:textColor="@android:color/black"
+				android:text="Set Chosen File"
+				android:id="@+id/choose_text"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"></TextView>
+		</LinearLayout>
+		<LinearLayout
+			android:gravity="center"
+			android:layout_height="fill_parent"
+			android:id="@+id/previewlayout"
+			android:layout_width="165dp"
+			android:weightSum="1"
+			android:orientation="vertical">
+			<ImageView
+				android:id="@+id/imageView3"
+				android:src="@drawable/preview"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"></ImageView>
+			<TextView
+				android:textColor="@android:color/black"
+				android:text="Preview Chosen File"
+				android:id="@+id/preview_text"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"></TextView>
+		</LinearLayout>
+	</LinearLayout>
+	<!-- Spacer -->
+	<LinearLayout
+		android:gravity="center"
+		android:layout_width="fill_parent"
+		android:layout_height="35dp">
+	</LinearLayout>
+	<!-- Reset & Preview Current -->
+	<LinearLayout
+		android:gravity="center"
+		android:layout_height="69dp"
+		android:id="@+id/linearLayout2"
+		android:layout_width="fill_parent"
+		android:weightSum="1"
+		android:orientation="horizontal">
+		<LinearLayout
+			android:gravity="center"
+			android:layout_height="fill_parent"
+			android:id="@+id/resetlayout"
+			android:layout_width="165dp"
+			android:weightSum="1"
+			android:orientation="vertical">
+			<ImageView
+				android:id="@+id/imageView2"
+				android:src="@drawable/reset"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"></ImageView>
+			<TextView
+				android:textColor="@android:color/black"
+				android:text="Reset"
+				android:id="@+id/reset_text"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"></TextView>
+		</LinearLayout>
+		<LinearLayout
+			android:gravity="center"
+			android:layout_height="fill_parent"
+			android:id="@+id/previewlayout_current"
+			android:layout_width="165dp"
+			android:weightSum="1"
+			android:orientation="vertical">
+			<ImageView
+				android:id="@+id/imageView3"
+				android:src="@drawable/preview"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"></ImageView>
+			<TextView
+				android:textColor="@android:color/black"
+				android:text="Preview Current File"
+				android:id="@+id/preview_text"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"></TextView>
+		</LinearLayout>
+	</LinearLayout>
+	<!-- Spacer -->
+	<LinearLayout
+		android:gravity="center"
+		android:layout_width="fill_parent"
+		android:layout_height="58dp">
+	</LinearLayout>
+	<!-- Install -->
+	<LinearLayout
+		android:id="@+id/uninstallayout_main"
+		android:gravity="center"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical">
+		<LinearLayout
+			android:gravity="center"
+			android:layout_height="fill_parent"
+			android:layout_width="wrap_content"
+			android:weightSum="1"
+			android:orientation="vertical">
+			<TextView
+				android:textColor="@android:color/black"
+				android:text="Uninstall Boot Animation Chooser Binary:"
+				android:id="@+id/uninstall_summary"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"></TextView>
+		</LinearLayout>
+		<LinearLayout
+			android:gravity="center"
+			android:layout_height="fill_parent"
+			android:id="@+id/uninstallayout"
+			android:layout_width="165dp"
+			android:weightSum="1"
+			android:orientation="vertical">
+			<ImageView
+				android:id="@+id/uninstall"
+				android:src="@drawable/uninstall"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"></ImageView>
+			<TextView
+				android:textColor="@android:color/black"
+				android:text="Uninstall"
+				android:id="@+id/uninstall_text"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"></TextView>
+		</LinearLayout>
+	</LinearLayout>
 </LinearLayout>
