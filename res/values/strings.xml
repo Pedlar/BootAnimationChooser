@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Bootanimation Chooser</string>
+    <string name="main_head">Bootanimation Chooser</string>
+    <string name="bootanimation_reset_title">Reset</string>
+    <string name="bootanimation_reset_summary">Reset a Bootanimation</string>
+    <string name="bootanimation_preview_title">Preview</string>
+    <string name="bootanimation_preview_summary">Preview A Bootanimation</string>
+    <string name="bootanimation_title">Choose</string>
+    <string name="bootanimation_summary">Choose a Bootanimation</string>
+    <string name="remove_ui">Reset to default.</string>
+    <string name="move_ui">Successfully set Bootanimation</string>
+    <string name="install_bootnim_title">Install</string>
+</resources>
