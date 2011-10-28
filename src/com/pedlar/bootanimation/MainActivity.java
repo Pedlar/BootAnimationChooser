@@ -7,6 +7,7 @@ import org.taptwo.android.widget.ViewFlow;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -58,6 +59,11 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
 
     private static boolean mBootPreviewRunning;
     private static final String BOOT_PREVIEW_FILE = "preview_bootanim";
+
+    private static final int BINARY = 1;
+
+    private static final int ALTERNATE = 2;
+
     private static int prevOrientation;
 
     private ViewFlow viewFlow;
@@ -71,6 +77,10 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
     private static String choseFile;
 
     private static Context mContext;
+
+    private static String installMethod;
+
+    private static SharedPreferences prefSet;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -95,14 +105,14 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
         currentDir = new File("/sdcard/");
         fill(currentDir);
 
-        mInstallLayoutMain = (LinearLayout) findViewById(R.id.installayout_main);
-        mInstallLayoutMain.setVisibility(View.GONE);
-        mUninstallLayoutMain = (LinearLayout) findViewById(R.id.uninstallayout_main);
-        mUninstallLayoutMain.setVisibility(View.GONE);
-        checkInstall();
-
         mMainLayout = (LinearLayout) findViewById(R.id.main_layout);
         mMainLayout.setOnClickListener(this);
+
+        mInstallLayoutMain = (LinearLayout) findViewById(R.id.installayout_main);
+        mInstallLayoutMain.setVisibility(View.GONE);
+
+        mUninstallLayoutMain = (LinearLayout) findViewById(R.id.uninstallayout_main);
+        mUninstallLayoutMain.setVisibility(View.GONE);
 
         mInstallLayout = (LinearLayout) findViewById(R.id.installayout);
         mInstallLayout.setOnClickListener(this);
@@ -123,6 +133,23 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
         mResetLayout.setOnClickListener(this);
 
         choseText = (TextView) findViewById(R.id.chose_file);
+
+        prefSet = getSharedPreferences("main", Context.MODE_PRIVATE);
+        if (prefSet.contains("installMethod") || (prefSet != null)) {
+            installMethod = prefSet.getString("installMethod", null);
+            setupInstallMethod(installMethod);
+        } else {
+            StartDialog myDialog = new StartDialog(this, new OnChoiceListener());
+            myDialog.show();
+        }
+
+    }
+
+    public int getInstallMethod() {
+        if (installMethod.equals("binary"))
+            return BINARY;
+        else
+            return ALTERNATE;
     }
 
     @Override
@@ -140,27 +167,23 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
         }
     }
 
-    private void fill(File f)
-    {
+    private void fill(File f) {
         File[] dirs = f.listFiles();
         textView.setText("Current Dir: " + f.getName());
         List<Option> dir = new ArrayList<Option>();
         List<Option> fls = new ArrayList<Option>();
         try {
-            for (File ff : dirs)
-            {
+            for (File ff : dirs) {
                 if (ff.isDirectory())
                     dir.add(new Option(ff.getName(), "Folder", ff.getAbsolutePath()));
-                else
-                {
+                else {
                     if (ff.getName().endsWith(".zip")) {
                         fls.add(new Option(ff.getName(), "File Size: " + ff.length(), ff
                                 .getAbsolutePath()));
                     }
                 }
             }
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         Collections.sort(dir);
@@ -194,24 +217,39 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
     }
 
     private void startPreview(boolean current) {
-        if (!current) {
-            String filePath = choseFile;
-            if (filePath != null) {
-                try {
-                    FileOutputStream outfile = mContext.openFileOutput(BOOT_PREVIEW_FILE,
-                            Context.MODE_WORLD_READABLE);
-                    outfile.write(filePath.getBytes());
-                    outfile.close();
-                } catch (Exception e) {
+        if (getInstallMethod() == BINARY) {
+            if (!current) {
+                String filePath = choseFile;
+                if (filePath != null) {
+                    try {
+                        FileOutputStream outfile = mContext.openFileOutput(BOOT_PREVIEW_FILE,
+                                Context.MODE_WORLD_READABLE);
+                        outfile.write(filePath.getBytes());
+                        outfile.close();
+                    } catch (Exception e) {
+                    }
+                    mBootPreviewRunning = true;
+                    prevOrientation = getRequestedOrientation();
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                    runRoot("setprop ctl.start bootanim");
+                } else {
+                    Toast.makeText(mContext, "Please choose a file.", Toast.LENGTH_SHORT).show();
                 }
+            } else {
                 mBootPreviewRunning = true;
                 prevOrientation = getRequestedOrientation();
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 runRoot("setprop ctl.start bootanim");
-            } else {
-                Toast.makeText(mContext, "Please choose a file.", Toast.LENGTH_SHORT).show();
             }
-        } else {
+        } else if (getInstallMethod() == ALTERNATE) {
+            if (!current) {
+                if (choseFile != null) {
+                    runRoot("mv /data/local/bootanimation.zip /data/local/bootanimation.preview_bk ; cp "
+                            + choseFile + " /data/local/bootanimation.zip");
+                } else {
+                    Toast.makeText(mContext, "Please choose a file.", Toast.LENGTH_SHORT).show();
+                }
+            }
             mBootPreviewRunning = true;
             prevOrientation = getRequestedOrientation();
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -219,13 +257,32 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
         }
     }
 
+    private void stopPreview() {
+        File rmFile = new File(mContext.getFilesDir(), BOOT_PREVIEW_FILE);
+        if (rmFile.exists()) {
+            try {
+                rmFile.delete();
+            } catch (Exception e) {
+            }
+        }
+        runRoot("mv /data/local/bootanimation.preview_bk /data/local/bootanimation.zip");
+        setRequestedOrientation(prevOrientation);
+        runRoot("setprop ctl.stop bootanim");
+        mBootPreviewRunning = false;
+    }
+
     private void saveFile() {
         String filePath = choseFile;
         if (filePath != null) {
-            Intent mvBootIntent = new Intent();
-            mvBootIntent.setAction(BOOT_MOVE);
-            mvBootIntent.putExtra("fileName", filePath);
-            sendBroadcast(mvBootIntent);
+            if (getInstallMethod() == BINARY) {
+                Intent mvBootIntent = new Intent();
+                mvBootIntent.setAction(BOOT_MOVE);
+                mvBootIntent.putExtra("fileName", filePath);
+                sendBroadcast(mvBootIntent);
+            } else if (getInstallMethod() == ALTERNATE) {
+                runRoot("cp /data/loca/bootanimation.zip /data/local/bootanimation.install_bk ; cp "
+                        + filePath + " /data/local/bootanimation.zip");
+            }
         } else {
             Toast.makeText(mContext, "Please choose a file.", Toast.LENGTH_SHORT).show();
         }
@@ -272,35 +329,15 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
     @Override
     public void onPause() {
         super.onPause();
-        Context context = getApplicationContext();
         if (mBootPreviewRunning) {
-            File rmFile = new File(context.getFilesDir(), BOOT_PREVIEW_FILE);
-            if (rmFile.exists()) {
-                try {
-                    rmFile.delete();
-                } catch (Exception e) {
-                }
-            }
-            setRequestedOrientation(prevOrientation);
-            runRoot("setprop ctl.stop bootanim");
-            mBootPreviewRunning = false;
+            stopPreview();
         }
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        Context context = getApplicationContext();
         if (keyCode == KeyEvent.KEYCODE_BACK && mBootPreviewRunning) {
-            File rmFile = new File(context.getFilesDir(), BOOT_PREVIEW_FILE);
-            if (rmFile.exists()) {
-                try {
-                    rmFile.delete();
-                } catch (Exception e) {
-                }
-            }
-            runRoot("setprop ctl.stop bootanim");
-            mBootPreviewRunning = false;
-            setRequestedOrientation(prevOrientation);
+            stopPreview();
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -332,21 +369,33 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
                     startPreview(true);
                     break;
                 case R.id.resetlayout:
-                    Intent intent = new Intent(BOOT_RESET);
-                    sendBroadcast(intent);
+                    if (getInstallMethod() == BINARY) {
+                        Intent intent = new Intent(BOOT_RESET);
+                        sendBroadcast(intent);
+                    } else if (getInstallMethod() == ALTERNATE) {
+                        runRoot("cp /data/loca/bootanimation.install_bak /data/local/bootanimation.zip");
+                        Toast.makeText(MainActivity.this, "Reset to default.", Toast.LENGTH_SHORT)
+                                .show();
+                    }
                     break;
             }
         } else {
-            File rmFile = new File(mContext.getFilesDir(), BOOT_PREVIEW_FILE);
-            if (rmFile.exists()) {
-                try {
-                    rmFile.delete();
-                } catch (Exception e) {
-                }
-            }
-            setRequestedOrientation(prevOrientation);
-            runRoot("setprop ctl.stop bootanim");
-            mBootPreviewRunning = false;
+            stopPreview();
+        }
+    }
+
+    private void setupInstallMethod(String type) {
+        if (type.equals("binary")) {
+            checkInstall();
+        }
+    }
+
+    private class OnChoiceListener implements StartDialog.ChoiceListener {
+        @Override
+        public void choice(String choice) {
+            prefSet.edit().putString("installMethod", choice).commit();
+            setupInstallMethod(choice);
+            Toast.makeText(MainActivity.this, choice, Toast.LENGTH_LONG).show();
         }
     }
 }
