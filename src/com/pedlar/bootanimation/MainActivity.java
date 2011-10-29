@@ -13,6 +13,9 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -67,6 +70,10 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
     private static final int BINARY = 1;
 
     private static final int ALTERNATE = 2;
+
+    private static final int SYSTEM_MEDIA = 3;
+
+    private static final int DATA_LOCAL = 4;
 
     private static int prevOrientation;
 
@@ -146,7 +153,21 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
             StartDialog myDialog = new StartDialog(this, new OnChoiceListener());
             myDialog.show();
         }
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
 
+    private int getInstallLocation() {
+        String installLocation = prefSet.getString("installLocation", "data_local");
+        if(installLocation.equals("data_local"))
+            return DATA_LOCAL;
+        else
+            return SYSTEM_MEDIA;
     }
 
     public int getInstallMethod() {
@@ -262,8 +283,13 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
         } else if (getInstallMethod() == ALTERNATE) {
             if (!current) {
                 if (choseFile != null) {
-                    runRoot("mv /data/local/bootanimation.zip /data/local/bootanimation.preview_bk ; cp \""
-                            + choseFile + "\" /data/local/bootanimation.zip");
+                    if(getInstallLocation() == DATA_LOCAL) {
+                        runRoot("mv /data/local/bootanimation.zip /data/local/bootanimation.preview_bk ; cp \""
+                                + choseFile + "\" /data/local/bootanimation.zip");
+                    } else if (getInstallLocation() == SYSTEM_MEDIA) {
+                        runRoot("mv /system/media/bootanimation.zip /system/media/bootanimation.preview_bk ; cp \""
+                                + choseFile + "\" /system/media/bootanimation.zip");
+                    }
                 } else {
                     Toast.makeText(mContext, "Please choose a file.", Toast.LENGTH_SHORT).show();
                     return;
@@ -285,9 +311,13 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
             }
         }
 
-        if (getInstallMethod() == ALTERNATE)
-            runRoot("mv /data/local/bootanimation.preview_bk /data/local/bootanimation.zip");
-
+        if (getInstallMethod() == ALTERNATE) {
+            if(getInstallLocation() == DATA_LOCAL) {
+                runRoot("mv /data/local/bootanimation.preview_bk /data/local/bootanimation.zip");
+            } else if (getInstallLocation() == SYSTEM_MEDIA) {
+                runRoot("mv /system/media/bootanimation.preview_bk /system/media/bootanimation.zip");
+            }
+        }
         setRequestedOrientation(prevOrientation);
         runRoot("setprop ctl.stop bootanim");
         mBootPreviewRunning = false;
@@ -302,8 +332,13 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
                 mvBootIntent.putExtra("fileName", filePath);
                 sendBroadcast(mvBootIntent);
             } else if (getInstallMethod() == ALTERNATE) {
-                runRoot("mv /data/local/bootanimation.zip /data/local/bootanimation.install_bk ; cp \""
-                        + filePath + "\" /data/local/bootanimation.zip");
+                if(getInstallLocation() == DATA_LOCAL) {
+                    runRoot("mv /data/local/bootanimation.zip /data/local/bootanimation.install_bk ; cp \""
+                            + filePath + "\" /data/local/bootanimation.zip");
+                } else if (getInstallLocation() == SYSTEM_MEDIA) {
+                    runRoot("mv /system/media/bootanimation.zip /system/media/bootanimation.install_bk ; cp \""
+                            + filePath + "\" /system/media/bootanimation.zip");
+                }
             }
         } else {
             Toast.makeText(mContext, "Please choose a file.", Toast.LENGTH_SHORT).show();
@@ -395,7 +430,11 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
                         Intent intent = new Intent(BOOT_RESET);
                         sendBroadcast(intent);
                     } else if (getInstallMethod() == ALTERNATE) {
-                        runRoot("cp /data/loca/bootanimation.install_bak /data/local/bootanimation.zip");
+                        if(getInstallLocation() == DATA_LOCAL) {
+                            runRoot("cp /data/local/bootanimation.install_bak /data/local/bootanimation.zip");
+                        } else if (getInstallLocation() == SYSTEM_MEDIA) {
+                            runRoot("cp /system/media/bootanimation.install_bak /system/media/bootanimation.zip");
+                        }
                         Toast.makeText(MainActivity.this, "Reset to default.", Toast.LENGTH_SHORT)
                                 .show();
                     }
@@ -420,5 +459,28 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
             setupInstallMethod(choice);
             /* Toast.makeText(MainActivity.this, choice, Toast.LENGTH_LONG).show(); */
         }
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.data_local:
+                if(item.isChecked())
+                    item.setChecked(false);
+                else
+                    item.setChecked(true);
+                prefSet.edit().putString("installLocation", "data_local").commit();
+                runRoot("rm -f /system/media/bootanimation.zip");
+                return true;
+            case R.id.system_menu:
+                if(item.isChecked())
+                    item.setChecked(false);
+                else
+                    item.setChecked(true);
+                prefSet.edit().putString("installLocation", "system_local").commit();
+                runRoot("rm -f /data/local/bootanimation.zip");
+                return true;
+        }
+        return super.onContextItemSelected(item);
     }
 }
