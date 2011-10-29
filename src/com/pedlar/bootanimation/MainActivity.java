@@ -5,11 +5,13 @@ import org.taptwo.android.widget.TitleFlowIndicator;
 import org.taptwo.android.widget.ViewFlow;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,6 +36,8 @@ import java.util.List;
 
 public class MainActivity extends Activity implements OnItemClickListener, OnClickListener {
 
+    public Handler mHandler = new Handler();
+    
     private static LinearLayout mMainLayout;
 
     private static LinearLayout mInstallLayout;
@@ -135,7 +139,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
         choseText = (TextView) findViewById(R.id.chose_file);
 
         prefSet = getSharedPreferences("main", Context.MODE_PRIVATE);
-        if (prefSet.contains("installMethod") || (prefSet != null)) {
+        if (prefSet.contains("installMethod")) {
             installMethod = prefSet.getString("installMethod", null);
             setupInstallMethod(installMethod);
         } else {
@@ -215,6 +219,20 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
             throw new RuntimeException(e);
         }
     }
+    
+    private void runBootAnim() {
+        final ProgressDialog pbarDialog =
+            ProgressDialog.show(this, "Loading...",
+                                "Preparing Boot Animation...", true, false);
+
+            mHandler.postDelayed(new Runnable() {
+                public void run() {
+                    pbarDialog.dismiss();
+                    runRoot("setprop ctl.start bootanim");
+                }
+            }, 5000);
+        
+    }
 
     private void startPreview(boolean current) {
         if (getInstallMethod() == BINARY) {
@@ -231,7 +249,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
                     mBootPreviewRunning = true;
                     prevOrientation = getRequestedOrientation();
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                    runRoot("setprop ctl.start bootanim");
+                    runBootAnim();
                 } else {
                     Toast.makeText(mContext, "Please choose a file.", Toast.LENGTH_SHORT).show();
                 }
@@ -239,21 +257,22 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
                 mBootPreviewRunning = true;
                 prevOrientation = getRequestedOrientation();
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                runRoot("setprop ctl.start bootanim");
+                runBootAnim();
             }
         } else if (getInstallMethod() == ALTERNATE) {
             if (!current) {
                 if (choseFile != null) {
-                    runRoot("mv /data/local/bootanimation.zip /data/local/bootanimation.preview_bk ; cp "
-                            + choseFile + " /data/local/bootanimation.zip");
+                    runRoot("mv /data/local/bootanimation.zip /data/local/bootanimation.preview_bk ; cp \""
+                            + choseFile + "\" /data/local/bootanimation.zip");
                 } else {
                     Toast.makeText(mContext, "Please choose a file.", Toast.LENGTH_SHORT).show();
+                    return;
                 }
             }
             mBootPreviewRunning = true;
             prevOrientation = getRequestedOrientation();
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            runRoot("setprop ctl.start bootanim");
+            runBootAnim();
         }
     }
 
@@ -265,7 +284,10 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
             } catch (Exception e) {
             }
         }
-        runRoot("mv /data/local/bootanimation.preview_bk /data/local/bootanimation.zip");
+
+        if (getInstallMethod() == ALTERNATE)
+            runRoot("mv /data/local/bootanimation.preview_bk /data/local/bootanimation.zip");
+
         setRequestedOrientation(prevOrientation);
         runRoot("setprop ctl.stop bootanim");
         mBootPreviewRunning = false;
@@ -280,8 +302,8 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
                 mvBootIntent.putExtra("fileName", filePath);
                 sendBroadcast(mvBootIntent);
             } else if (getInstallMethod() == ALTERNATE) {
-                runRoot("cp /data/loca/bootanimation.zip /data/local/bootanimation.install_bk ; cp "
-                        + filePath + " /data/local/bootanimation.zip");
+                runRoot("mv /data/local/bootanimation.zip /data/local/bootanimation.install_bk ; cp \""
+                        + filePath + "\" /data/local/bootanimation.zip");
             }
         } else {
             Toast.makeText(mContext, "Please choose a file.", Toast.LENGTH_SHORT).show();
@@ -394,8 +416,9 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
         @Override
         public void choice(String choice) {
             prefSet.edit().putString("installMethod", choice).commit();
+            installMethod = choice;
             setupInstallMethod(choice);
-            Toast.makeText(MainActivity.this, choice, Toast.LENGTH_LONG).show();
+            /* Toast.makeText(MainActivity.this, choice, Toast.LENGTH_LONG).show(); */
         }
     }
 }
