@@ -315,7 +315,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
             if(getInstallLocation() == DATA_LOCAL) {
                 runRoot("mv /data/local/bootanimation.preview_bk /data/local/bootanimation.zip");
             } else if (getInstallLocation() == SYSTEM_MEDIA) {
-                runRoot("mv mount -o remount,rw /system ; /system/media/bootanimation.preview_bk /system/media/bootanimation.zip ; mount -o remount,ro /system ;");
+                runRoot("mount -o remount,rw /system ; mv /system/media/bootanimation.preview_bk /system/media/bootanimation.zip ; mount -o remount,ro /system ;");
             }
         }
         setRequestedOrientation(prevOrientation);
