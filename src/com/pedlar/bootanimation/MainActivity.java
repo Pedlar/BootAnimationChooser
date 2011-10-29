@@ -287,8 +287,8 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
                         runRoot("mv /data/local/bootanimation.zip /data/local/bootanimation.preview_bk ; cp \""
                                 + choseFile + "\" /data/local/bootanimation.zip");
                     } else if (getInstallLocation() == SYSTEM_MEDIA) {
-                        runRoot("mv /system/media/bootanimation.zip /system/media/bootanimation.preview_bk ; cp \""
-                                + choseFile + "\" /system/media/bootanimation.zip");
+                        runRoot("mount -o remount,rw /system ; mv /system/media/bootanimation.zip /system/media/bootanimation.preview_bk ; cp \""
+                                + choseFile + "\" /system/media/bootanimation.zip ; mount -o remount,rw /system");
                     }
                 } else {
                     Toast.makeText(mContext, "Please choose a file.", Toast.LENGTH_SHORT).show();
@@ -315,7 +315,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
             if(getInstallLocation() == DATA_LOCAL) {
                 runRoot("mv /data/local/bootanimation.preview_bk /data/local/bootanimation.zip");
             } else if (getInstallLocation() == SYSTEM_MEDIA) {
-                runRoot("mv /system/media/bootanimation.preview_bk /system/media/bootanimation.zip");
+                runRoot("mv mount -o remount,rw /system ; /system/media/bootanimation.preview_bk /system/media/bootanimation.zip ; mount -o remount,ro /system ;");
             }
         }
         setRequestedOrientation(prevOrientation);
@@ -336,8 +336,8 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
                     runRoot("mv /data/local/bootanimation.zip /data/local/bootanimation.install_bk ; cp \""
                             + filePath + "\" /data/local/bootanimation.zip");
                 } else if (getInstallLocation() == SYSTEM_MEDIA) {
-                    runRoot("mv /system/media/bootanimation.zip /system/media/bootanimation.install_bk ; cp \""
-                            + filePath + "\" /system/media/bootanimation.zip");
+                    runRoot("mount -o remount,rw /system ; mv /system/media/bootanimation.zip /system/media/bootanimation.install_bk ; cp \""
+                            + filePath + "\" /system/media/bootanimation.zip ; mount -o remount,ro /system ;");
                 }
             }
         } else {
@@ -433,7 +433,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
                         if(getInstallLocation() == DATA_LOCAL) {
                             runRoot("cp /data/local/bootanimation.install_bak /data/local/bootanimation.zip");
                         } else if (getInstallLocation() == SYSTEM_MEDIA) {
-                            runRoot("cp /system/media/bootanimation.install_bak /system/media/bootanimation.zip");
+                            runRoot("mount -o remount,rw /system ; cp /system/media/bootanimation.install_bak /system/media/bootanimation.zip ; mount -o remount,ro /system");
                         }
                         Toast.makeText(MainActivity.this, "Reset to default.", Toast.LENGTH_SHORT)
                                 .show();
@@ -470,7 +470,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
                 else
                     item.setChecked(true);
                 prefSet.edit().putString("installLocation", "data_local").commit();
-                runRoot("rm -f /system/media/bootanimation.zip");
+                runRoot("mount -o remount,rw /system ; rm -f /system/media/bootanimation.zip ; mount -o remount,ro /system");
                 return true;
             case R.id.system_menu:
                 if(item.isChecked())
