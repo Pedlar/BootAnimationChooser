@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TableLayout 
+	android:id="@+id/tableLayout1"
+	android:layout_width="fill_parent" 
+	android:layout_height="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" 
+	android:background="@drawable/background">
+	<View 
+			android:id="@+id/separator" 
+ 			android:background="@android:color/darker_gray" 
+ 			android:layout_width = "fill_parent"
+ 			android:layout_height="5dip"
+ 			android:layout_marginTop="10dip"
+ 			android:layout_centerVertical ="true"
+ 			android:layout_alignParentTop="true"/>
+	<TableRow 
+		android:id="@+id/tableRow2" 
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" 
+		android:orientation="horizontal"
+		android:gravity="center" 
+		android:background="@android:color/black">
+		<TextView 
+			android:text="Install Method" 
+			android:id="@+id/textView1"
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceLarge"
+			android:layout_gravity="center">
+		</TextView>
+	</TableRow>
+	<View 
+			android:id="@+id/separator" 
+ 			android:background="@android:color/darker_gray"
+ 			android:layout_height="5dip"
+ 			android:layout_marginBottom="10dip"
+ 			android:layout_centerVertical ="true"
+ 			android:layout_alignParentTop="true"/>
+
+	<RadioGroup 
+		android:id="@+id/radio_method"
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content">
+		<RadioButton 
+			android:id="@+id/binary_radio"
+			android:checked="true"
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			android:text="  Binary (Recommended)"
+			android:textColor="@android:color/black">
+		</RadioButton>
+		<RadioButton 
+			android:id="@+id/alternate_radio"
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			android:text="  Alternate"
+			android:textColor="@android:color/black">
+		</RadioButton>
+	</RadioGroup>
+
+	<View 
+			android:id="@+id/separator" 
+ 			android:background="@android:color/darker_gray" 
+ 			android:layout_width = "fill_parent"
+ 			android:layout_height="5dip"
+ 			android:layout_marginTop="10dip"
+ 			android:layout_centerVertical ="true"
+ 			android:layout_alignParentTop="true"/>
+	<TableRow 
+		android:id="@+id/tableRow2" 
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" 
+		android:orientation="horizontal"
+		android:gravity="center" 
+		android:background="@android:color/black">
+		<TextView 
+			android:text="Install Location" 
+			android:id="@+id/textView1"
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceLarge"
+			android:layout_gravity="center">
+		</TextView>
+	</TableRow>
+	
+	<View 
+		android:id="@+id/separator" 
+ 		android:background="@android:color/darker_gray"
+ 		android:layout_height="5dip"
+ 		android:layout_marginBottom="10dip"
+ 		android:layout_centerVertical ="true"
+ 		android:layout_alignParentTop="true"/>
+ 			
+	<RadioGroup 
+		android:id="@+id/radio_location"
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content">
+		<RadioButton 
+			android:id="@+id/data_local_radio"
+			android:checked="true" 
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			android:text="  /data/local/"
+			android:textColor="@android:color/black">
+		</RadioButton>
+		<RadioButton 
+			android:id="@+id/sys_media_radio"
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			android:text="  /system/media/"
+			android:textColor="@android:color/black">
+		</RadioButton>
+	</RadioGroup>
+
+</TableLayout>
