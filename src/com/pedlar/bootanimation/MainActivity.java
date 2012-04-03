@@ -160,9 +160,11 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
         mRadioGroupLocation = (RadioGroup) findViewById(R.id.radio_location);
         mRadioGroupLocation.setOnCheckedChangeListener(this);
 
+/*
+ * Removing Binary Installer for Now.
         mRadioGroupMethod = (RadioGroup) findViewById(R.id.radio_method);
         mRadioGroupMethod.setOnCheckedChangeListener(this);
-
+*/
         choseText = (TextView) findViewById(R.id.chose_file);
 
         prefSet = getSharedPreferences("main", Context.MODE_PRIVATE);
@@ -201,10 +203,11 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
     private void setupRadioButtons() {
         mRadioButtonData = (RadioButton) findViewById(R.id.data_local_radio);
         mRadioButtonSystem = (RadioButton) findViewById(R.id.sys_media_radio);
-        
+        /*
+         * Removing Binary Installer for Now.
         mRadioButtonBinary = (RadioButton) findViewById(R.id.binary_radio);
         mRadioButtonAlternate = (RadioButton) findViewById(R.id.alternate_radio);
-        
+         */
         switch(getInstallLocation()) {
             case DATA_LOCAL:
                 mRadioButtonData.setChecked(true);
@@ -215,7 +218,8 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
                 mRadioButtonSystem.setChecked(true);
                 break;
         }
-        
+        /*
+         * Removing Binary Installer for Now.
         switch(getInstallMethod()) {
             case ALTERNATE:
                 mRadioButtonAlternate.setChecked(true);
@@ -226,11 +230,12 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
                 mRadioButtonBinary.setChecked(true);
                 break;
         }
+         */
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-        Toast.makeText(mContext, v.getId() + " " + v.toString(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(mContext, v.getId() + " " + v.toString(), Toast.LENGTH_SHORT).show();
         Option o = adapter.getItem(position);
         if (o.getData().equalsIgnoreCase("folder")
                 || o.getData().equalsIgnoreCase("parent directory")) {
@@ -356,6 +361,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
     }
 
     private void stopPreview() {
+        runRoot("setprop ctl.stop bootanim");
         File rmFile = new File(mContext.getFilesDir(), BOOT_PREVIEW_FILE);
         if (rmFile.exists()) {
             try {
@@ -372,7 +378,6 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
             }
         }
         setRequestedOrientation(prevOrientation);
-        runRoot("setprop ctl.stop bootanim");
         mBootPreviewRunning = false;
     }
 
@@ -520,6 +525,8 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
                 prefSet.edit().putString("installLocation", "data_local").commit();
                 runRoot("mount -o remount,rw /system ; rm -f /system/media/bootanimation.zip ; mount -o remount,ro /system");
                 break;
+/*
+ * Removing Binary Installer for now.
             case R.id.binary_radio:
                 prefSet.edit().putString("installMethod", "binary").commit();
                 installMethod = "binary";
@@ -530,6 +537,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
                 installMethod = "alternate";
                 setupInstallMethod("alternate");
                 break;
+*/
         }
     }
 

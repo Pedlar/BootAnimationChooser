@@ -38,8 +38,11 @@ public class StartDialog extends Dialog {
         textMessage = (TextView) findViewById(R.id.start_text);
         textMessage.setText(R.string.start_message);
 
-        buttonBinary = (Button) findViewById(R.id.binary_button);
-        buttonBinary.setOnClickListener(new buttonClickBinary());
+        /* 
+         * Removing Binary Option for now.
+          buttonBinary = (Button) findViewById(R.id.binary_button);
+          buttonBinary.setOnClickListener(new buttonClickBinary());
+        */
         buttonAlternate = (Button) findViewById(R.id.alternate_button);
         buttonAlternate.setOnClickListener(new buttonClickAlternate());
     }

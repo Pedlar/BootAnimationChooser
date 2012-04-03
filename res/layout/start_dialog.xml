@@ -47,32 +47,39 @@
 			</TextView>
 		</FrameLayout>
 	</ScrollView>
-	<View 
-			android:id="@+id/separator" 
- 			android:background="#ffffff" 
- 			android:layout_width = "fill_parent"
- 			android:layout_height="3dip"
- 			android:layout_marginTop="10dip"
- 			android:layout_marginBottom="10dip"
- 			android:layout_centerVertical ="true"
- 			android:layout_alignParentTop="true"/>
+
+	<View
+	    android:id="@+id/separator"
+	    android:layout_width="306dp"
+	    android:layout_height="3dip"
+	    android:layout_alignParentTop="true"
+	    android:layout_centerVertical="true"
+	    android:layout_marginBottom="10dip"
+	    android:layout_marginTop="10dip"
+	    android:layout_weight="0.06"
+	    android:background="#ffffff" />
+
 	 <LinearLayout
 		android:id="@+id/linearLayout2"
 		android:layout_height="wrap_content" 
 		android:layout_width="wrap_content"
 		android:orientation="horizontal"
 		android:layout_gravity="center">
+		<!-- 
 		<Button 
 			android:text="Binary Installer" 
 			android:id="@+id/binary_button"
 			android:layout_height="wrap_content" 
 			android:layout_width="wrap_content">
 		</Button>
-		<Button 
-			android:text="Alternate Installer" 
-			android:id="@+id/alternate_button"
-			android:layout_height="wrap_content" 
-			android:layout_width="wrap_content">
+		-->
+
+		<Button
+		    android:id="@+id/alternate_button"
+		    android:layout_width="219dp"
+		    android:layout_height="wrap_content"
+		    android:text="Ok!" >
+
 		</Button>
 	</LinearLayout>
 </LinearLayout>
