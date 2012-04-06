@@ -1,0 +1,3 @@
+Requires this library to compile:
+
+https://github.com/pakerfeldt/android-viewflow
