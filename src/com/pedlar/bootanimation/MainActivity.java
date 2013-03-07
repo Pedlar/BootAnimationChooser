@@ -28,6 +28,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -457,6 +458,15 @@ public class MainActivity extends Activity implements OnItemClickListener, OnCli
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+    
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        if (mBootPreviewRunning) {
+            stopPreview();
+            return true;
+        }
+        return super.onTouchEvent(ev);
     }
 
     @Override
